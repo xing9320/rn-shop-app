@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import productReducer from './reducers/products'
+import reducer from './reducers/index';
 
 export default configureStore({
-  reducer: {
-    products: productReducer
-  },
+  reducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false,
+}),
 })
