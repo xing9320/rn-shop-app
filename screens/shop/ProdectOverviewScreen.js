@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, Text } from 'react-native';
+import { FlatList} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ProductItem from '../../components/shop/ProductItem';
