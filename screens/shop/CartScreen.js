@@ -1,8 +1,10 @@
 import React from 'react'
 import { View, Text, FlatList, Button, StyleSheet } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux'
 import Colors from '../../constants/Colors'
 import CartItem from '../../components/shop/CartItem'
+import * as cartActions from '../../store/actions/cart'
+import * as ordersActions from '../../store/actions/orders'
 
 export default function CartScreen() {
     const cartTotalAmount = useSelector(state => state.cart.totalAmount)
@@ -18,6 +20,7 @@ export default function CartScreen() {
             sum: selectCartItems[key].sum
         })
     }
+    const dispatch = useDispatch();
 
     return (
         <View style={styles.screen}>
@@ -25,18 +28,27 @@ export default function CartScreen() {
                 <Text style={styles.summaryText}>
                     Total: <Text style={styles.amount}>${cartTotalAmount.toFixed(2)}</Text>
                 </Text>
-                <Button color={Colors.accent} title='Oreder Now' disabled={cartItems.length === 0} />
+                <Button 
+                color={Colors.accent} 
+                title='Oreder Now' 
+                disabled={cartItems.length === 0} 
+                onPress={() => {
+                    dispatch(ordersActions.addOrder(cartItems, cartTotalAmount))
+                }}
+                />
             </View>
             <View>
                 <FlatList
-                    data={cartItems}
+                    data={cartItems.sort((a, b) => a.productId > b.productId ? 1 : -1)}
                     keyExtractor={item => item.productId}
                     renderItem={itemData => (
                         <CartItem
                             quantity={itemData.item.quantity}
                             title={itemData.item.productTitle}
                             amount={itemData.item.sum} 
-                            onRemove={() => { }}
+                            onRemove={() => {
+                                dispatch(cartActions.removeFromCart(itemData.item.productId));
+                             }}
                         />
                     )}
                 />
