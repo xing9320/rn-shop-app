@@ -9,6 +9,8 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+/%ProgramData%/
+assets/images
 
 # macOS
 .DS_Store
