@@ -8,6 +8,7 @@ import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
 import OrdersScreen from '../screens/shop/OrdersScreen';
 import CartScreen from '../screens/shop/CartScreen';
 import UserProductsScreen from '../screens/user/UserProductsScreen';
+import EditProductScreen from '../screens/user/EditProductScreen';
 import Colors from '../constants/Colors';
 import HeaderButton from '../components/UI/HeaderButton'
 
@@ -67,21 +68,21 @@ function OrderNavigation() {
     )
 }
 
-function  AdminNavigation() {
+function AdminNavigation() {
     return (
         <Stack.Navigator screenOptions={defaultNavigationOptions}>
             <Stack.Screen
-                name='User'
+                name='UserProducts'
                 component={UserProductsScreen}
                 options={({ navigation }) => ({
                     headerTitle: 'Your Products',
                     headerRight: () => (
                         <HeaderButton
-                            title='Cart'
-                            onPress={() => { navigation.navigate("Cart") }}
+                            title='Add'
+                            onPress={() => { navigation.navigate("EditProduct") }}
                         >
                             <Ionicons
-                                name={Platform.OS === 'android' ? 'cart-outline' : 'cart'}
+                                name={Platform.OS === 'android' ? 'create-outline' : 'create'}
                                 size={23}
                                 color={Platform.OS === 'android' ? 'white' : Colors.primary}
                             />
@@ -96,6 +97,10 @@ function  AdminNavigation() {
                             />
                         </HeaderButton>),
                 })}
+            />
+            <Stack.Screen
+                name='EditProduct'
+                component={EditProductScreen}
             />
         </Stack.Navigator>
     )

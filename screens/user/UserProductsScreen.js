@@ -1,13 +1,27 @@
 import React from 'react'
-import { FlatList, Button } from 'react-native'
+import { FlatList, Button,  Alert  } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import ProductItem from '../../components/shop/ProductItem'
 import Colors from '../../constants/Colors'
 import * as productsActions from '../../store/actions/products'
 
-export default function UserProductsScreen() {
+export default function UserProductsScreen(props) {
     const userProducts = useSelector(state => state.products.userProducts)
     const dispatch = useDispatch();
+
+    const editProductHandler = (id) => {
+        props.navigation.navigate('EditProduct', {productId: id})
+    }
+
+    const deleteHandler = (id) => {
+        Alert.alert("Are you sure?", "DO you really want to delete this item?", [
+            {text: 'No', style: 'default'},
+            {text: 'Yes', style: 'destructive', onPress: () => { 
+                dispatch(productsActions.deleteProduct(id))  
+            }}
+        ])
+    }
+
     return (
         <FlatList
             data={userProducts}
@@ -17,21 +31,19 @@ export default function UserProductsScreen() {
                     image={itemData.item.imageUrl}
                     title={itemData.item.title}
                     price={itemData.item.price}
-                    onSelect={() => {}}
+                    onSelect={() => {editProductHandler(itemData.item.id)}}
                 >
                     <Button
                         color={Colors.primary}
                         title="Edit"
                         onPress={() => {
-                            
+                            editProductHandler(itemData.item.id)
                         }}
                     />
                     <Button
                         color={Colors.primary}
                         title="Delete"
-                        onPress={() => {
-                            dispatch(productsActions.deleteProduct(itemData.item.id))
-                        }}
+                        onPress={() => {deleteHandler(itemData.item.id)}}
                     />
                 </ProductItem>}
         />
